@@ -1,0 +1,127 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     pisoFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         400;
+
+deltaT          0.001;
+
+writeControl    timeStep;
+
+writeInterval   1000;
+
+purgeWrite      0;
+
+writeFormat     binary;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+// ************************************************************************* //
+
+functions
+{ 
+// ************************************************************************* //
+fieldAverage1
+{
+    // Mandatory entries (unmodifiable)
+    type            fieldAverage;
+    libs            ("libfieldFunctionObjects.so");
+
+    // Mandatory entries (runtime modifiable)
+    fields
+    (
+        U
+        {
+            mean        yes;
+            prime2Mean  yes;
+            base        iteration;
+            windowType   exact;
+            window       10.0;
+            windowName   w1;
+            allowRestart true;
+        }
+        
+       p
+       {
+        mean        yes;
+       prime2Mean  yes;
+        base        iteration;
+      }
+      
+      
+    );
+
+    // Optional entries (runtime modifiable)
+    restartOnRestart    false;
+    restartOnOutput     false;
+    periodicRestart     false;
+    restartPeriod       0.002;
+
+    // Optional (inherited) entries
+    region          region0;
+    enabled         true;
+    log             true;
+    timeStart       200;
+    timeEnd         500;
+    executeControl  timeStep;
+    executeInterval 1;
+    writeControl    timeStep;
+    writeInterval   1000;
+ }
+// ************************************************************************* //
+forceCoeffs1
+{
+    type                forceCoeffs;
+    functionObjectLibs  ( "libforces.so" );
+    writeControl       timeStep;
+    writeInterval      5;
+ 
+    patches             ( "cylinder" );
+    pName               p;
+    UName               U;
+    rho             rhoInf;
+    log                 true;
+     
+    liftDir             (0 1 0);
+    dragDir             (1 0 0);
+    CofR                (0 0 0);
+    pitchAxis           (0 0 1);
+     
+    magUInf             1;
+    rhoInf              1;
+    lRef                1;     // Diameter of Cylinder.
+    Aref                1;     // Projected Area = Diameter * Length of Cylinder.
+    
+    
+                               // Note for 2D cylinder flow Length is size of mesh in Z-direction (usually taken as unity)
+}
+}
