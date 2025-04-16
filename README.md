@@ -36,6 +36,3 @@ The computational mesh for this simulation was generated using GAMBIT version 2.
     ```
     You can then visualize velocity vectors, pressure fields, and other relevant quantities.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
