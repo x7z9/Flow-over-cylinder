@@ -10,14 +10,14 @@ The simulation investigates the flow at a Reynolds number of 100, leading to the
 
 ## Mesh Generation
 
-The mesh was generated using the `blockMesh` utility with the dictionary file located at `mesh/blockMeshDict`.
+The computational mesh for this simulation was generated using GAMBIT version 2.4.6. The mesh file, `34x18.msh`, is included in the `case/` directory (or potentially in a separate `mesh/` directory). This mesh was converted to OpenFOAM format using the `fluentMeshToFoam` utility.
 
 ## Setup Instructions
 
 1.  **Prerequisites:** Ensure you have OpenFOAM v10 and ParaView installed on your system.
 2.  **Clone the Repository:**
     ```bash
-    git clone [https://github.com/your-username/your-project-name.git](https://github.com/your-username/your-project-name.git)
+    git clone [https://github.com/x7z9/Flow-over-cylinder.git](https://github.com/x7z9/Flow-over-cylinder.git)
     cd your-project-name
     ```
 3.  **Navigate to the Case Directory:**
@@ -27,10 +27,6 @@ The mesh was generated using the `blockMesh` utility with the dictionary file lo
 4.  **Run the Simulation:**
     ```bash
     fluentMeshToFoam 34x18.msh && checkMesh && topoSet && pisoFoam && decomposePar && mpirun -np 8 pisoFoam -parallel && reconstructPar && postProcess -func vorticity && rm -r processor*
-
-
-
-
     ```
     This script will execute the mesh generation and the `pisoFoam` solver.
 5.  **Post-processing:**
